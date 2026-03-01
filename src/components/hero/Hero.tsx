@@ -1,51 +1,67 @@
-import { useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { HeroScene } from './HeroScene'
+import { useEffect, useRef } from 'react'
 import { heroScrollProgress } from './scrollProgress'
 
-const CAMERA_POSITION: [number, number, number] = [5, 1.4, 5]
-const CAMERA_FOV = 45
+/** Путь к фоновому изображению hero. Добавьте public/images/hero-bg.jpg или замените на финальное. */
+const HERO_BG_IMAGE = '/images/hero-bg.jpg'
 
-function updateScrollProgress() {
+const PARALLAX_FACTOR = 0.4
+
+function updateScrollProgress(bgRef: React.RefObject<HTMLDivElement | null>) {
   const vh = window.innerHeight
-  heroScrollProgress.current = Math.min(1, Math.max(0, window.scrollY / vh))
+  const scrollY = window.scrollY
+  heroScrollProgress.current = Math.min(1, Math.max(0, scrollY / vh))
+  if (bgRef.current) {
+    const offsetY = scrollY * PARALLAX_FACTOR
+    bgRef.current.style.transform = `translate3d(0, ${offsetY}px, 0)`
+  }
 }
 
 export function Hero() {
+  const bgRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    updateScrollProgress()
-    window.addEventListener('scroll', updateScrollProgress, { passive: true })
-    window.addEventListener('resize', updateScrollProgress)
+    const tick = () => updateScrollProgress(bgRef)
+    tick()
+    window.addEventListener('scroll', tick, { passive: true })
+    window.addEventListener('resize', tick)
     return () => {
-      window.removeEventListener('scroll', updateScrollProgress)
-      window.removeEventListener('resize', updateScrollProgress)
+      window.removeEventListener('scroll', tick)
+      window.removeEventListener('resize', tick)
     }
   }, [])
 
   return (
     <section
-      className="relative h-screen w-full"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden"
       style={{ minHeight: '100vh' }}
-      aria-label="Главный экран — 3D угловой шкаф"
+      aria-label="Главный экран"
     >
-      <Canvas
-        className="h-full w-full"
-        camera={{
-          position: CAMERA_POSITION,
-          fov: CAMERA_FOV,
-          near: 0.1,
-          far: 1000,
+      {/* Слой фона с параллаксом */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 -z-10 h-[calc(100%+50vh)] w-full bg-cover bg-center bg-no-repeat will-change-transform"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(250,250,250,0.85), rgba(245,245,245,0.9)), url(${HERO_BG_IMAGE})`,
+          top: 0,
         }}
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance',
-        }}
-        dpr={[1, 2]}
-        shadows
-      >
-        <HeroScene />
-      </Canvas>
+        aria-hidden
+      />
+
+      {/* Контент поверх */}
+      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+        <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl lg:text-6xl">
+          Мебель для образования, офиса и дома
+        </h1>
+        <p className="mt-4 text-lg text-neutral-600 md:text-xl">
+          Шкафы, столы, кровати и комплекты для детских садов, школ, офисов и общежитий
+        </p>
+        <a
+          href="#categories"
+          className="mt-8 inline-block rounded-lg bg-amber-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+        >
+          Смотреть каталог
+        </a>
+      </div>
     </section>
   )
 }
