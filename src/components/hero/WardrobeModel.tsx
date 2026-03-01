@@ -2,7 +2,8 @@ import { useGLTF } from '@react-three/drei'
 import { useMemo } from 'react'
 import * as THREE from 'three'
 
-const MODEL_URL = '/models/wardrobe.glb'
+/** BASE_URL нужен для корректной загрузки модели на GitHub Pages (сайт в подпапке /woodora/). */
+const MODEL_URL = `${import.meta.env.BASE_URL}models/wardrobe.glb`
 
 /**
  * Загружает и отображает GLB-модель углового шкафа.

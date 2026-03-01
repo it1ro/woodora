@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { heroScrollProgress } from './scrollProgress'
 
-/** Путь к фоновому изображению hero. Добавьте public/images/hero-bg.jpg или замените на финальное. */
-const HERO_BG_IMAGE = '/images/hero-bg.jpg'
+/** Путь к фоновому изображению hero (BASE_URL для корректной работы на GitHub Pages). */
+const HERO_BG_IMAGE = `${import.meta.env.BASE_URL}images/hero-bg.jpg`
 
 const PARALLAX_FACTOR = 0.4
 
