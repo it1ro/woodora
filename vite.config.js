@@ -1,7 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 export default defineConfig({
-    plugins: [react()],
+    base: '/woodora/',
+    plugins: [
+        react(),
+        ViteImageOptimizer({
+            test: /\.(jpe?g|png|gif|tiff|webp|avif)$/i, // без svg — не тянем svgo
+            jpg: { quality: 80 },
+            jpeg: { quality: 80 },
+            logStats: true,
+        }),
+    ],
     server: {
         host: true, // слушать на 0.0.0.0 — доступ с других устройств в сети
     },
