@@ -152,7 +152,7 @@ export function WardrobeShowcaseScene() {
       <ambientLight intensity={0.4} />
       <Environment preset="studio" />
       <Center>
-        <group ref={groupRef}>
+        <group ref={groupRef} position={[0, -1.5, -2]}>
           <ModelErrorBoundary>
             <Suspense fallback={null}>
               <WardrobeModel />
