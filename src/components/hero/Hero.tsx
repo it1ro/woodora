@@ -41,7 +41,7 @@ export function Hero() {
         ref={bgRef}
         className="absolute inset-0 -z-10 h-[calc(100%+50vh)] w-full bg-cover bg-center bg-no-repeat will-change-transform"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(250,250,250,0.85), rgba(245,245,245,0.9)), url(${HERO_BG_IMAGE})`,
+          backgroundImage: `linear-gradient(to bottom, rgba(250,250,250,0.43), rgba(245,245,245,0.45)), url(${HERO_BG_IMAGE})`,
           top: 0,
         }}
         aria-hidden
