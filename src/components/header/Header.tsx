@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { FullscreenMenu } from './FullscreenMenu'
 import { CatalogDropdown } from './CatalogDropdown'
 import { phone, phoneHref } from '../../data/contacts'
@@ -44,11 +44,14 @@ function CartIcon() {
   )
 }
 
+const noop = () => {}
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [catalogOpen, setCatalogOpen] = useState(false)
   const catalogHoverRef = useRef(false)
   const catalogTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const mobileCatalogRef = useRef<HTMLDivElement>(null)
 
   const handleCatalogMouseEnter = useCallback(() => {
     if (catalogTimeoutRef.current) {
@@ -66,6 +69,24 @@ export function Header() {
       catalogTimeoutRef.current = null
     }, 150)
   }, [])
+
+  // Закрытие каталога по клику/тапу вне области только на мобильных (когда открыт по кнопке)
+  useEffect(() => {
+    if (!catalogOpen) return
+    const mql = window.matchMedia('(max-width: 767px)')
+    if (!mql.matches) return
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node
+      if (mobileCatalogRef.current?.contains(target)) return
+      setCatalogOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside, { passive: true })
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [catalogOpen])
 
   return (
     <>
@@ -94,7 +115,31 @@ export function Header() {
             {LOGO}
           </a>
 
-          {/* Каталог с выпадающим меню — десктоп */}
+          {/* Каталог — мобильные: кнопка по клику, выпадашка с isTouch */}
+          <div ref={mobileCatalogRef} className="relative md:hidden">
+            <button
+              type="button"
+              className="flex items-center gap-1 rounded px-2 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 min-h-[2.25rem] min-w-[2.25rem] touch-manipulation"
+              onClick={() => setCatalogOpen((o) => !o)}
+              aria-expanded={catalogOpen}
+              aria-haspopup="menu"
+              aria-label="Каталог"
+            >
+              Каталог
+              <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <CatalogDropdown
+              isOpen={catalogOpen}
+              onClose={() => setCatalogOpen(false)}
+              onMouseEnter={noop}
+              onMouseLeave={noop}
+              isTouch={true}
+            />
+          </div>
+
+          {/* Каталог с выпадающим меню — десктоп (hover) */}
           <div
             className="relative hidden md:block"
             onMouseEnter={handleCatalogMouseEnter}

@@ -33,7 +33,7 @@ export function CatalogDropdown({
   return (
     <div
       className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2"
-      style={{ width: 'min(90vw, 32rem)', minWidth: '420px' }}
+      style={{ width: 'min(90vw, 32rem)', minWidth: 'min(280px, 90vw)' }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       role="menu"
