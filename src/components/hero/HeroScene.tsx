@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Center, Environment, Html, useProgress } from '@react-three/drei'
 import { WardrobeModel } from './WardrobeModel'
-import { CameraTarget } from './CameraTarget'
+import { ParallaxCamera } from './ParallaxCamera'
 import { ModelErrorBoundary } from './ModelErrorBoundary'
 
 function LoaderFallback() {
@@ -18,7 +18,7 @@ function LoaderFallback() {
 export function HeroScene() {
   return (
     <>
-      <CameraTarget target={[0, 0, 0]} />
+      <ParallaxCamera />
       <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow shadow-mapSize={[2048, 2048]} />
       <ambientLight intensity={0.4} />
       <Environment preset="studio" />
