@@ -6,6 +6,7 @@ import { Footer } from './components/Footer'
 import { SectionCategories } from './components/sections/SectionCategories'
 import { SectionAdvantages } from './components/sections/SectionAdvantages'
 import { SectionCTA } from './components/sections/SectionCTA'
+import { SectionWardrobe3D } from './components/sections/SectionWardrobe3D'
 import { SectionRoadmap } from './components/sections/SectionRoadmap'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <SectionCategories />
         <SectionAdvantages />
         <SectionCTA />
+        <SectionWardrobe3D />
         <SectionRoadmap />
       </main>
       <Footer />
