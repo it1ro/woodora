@@ -24,6 +24,11 @@ function App() {
           title="О компании"
           description="Преимущества и информация — заглушка"
         />
+        <SectionPlaceholder
+          id="cta"
+          title="Связаться"
+          description="Призыв к действию — заглушка"
+        />
       </main>
       <Footer />
     </>
