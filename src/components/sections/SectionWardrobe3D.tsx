@@ -7,6 +7,9 @@ import { wardrobeSectionScrollProgress } from '../hero/scrollProgress'
 /** Цвет фона сцены — совпадает с фоном страницы (neutral-50). */
 const SCENE_BACKGROUND = 0xfafafa
 
+/** Макс. device pixel ratio для Canvas — ограничение для производительности на HiDPI. */
+const MAX_DPR = 2
+
 /** Доля viewport: вращение начинается раньше (секция ещё ниже). Больше = триггер раньше. */
 const SCROLL_RANGE_EXTRA = 0.95
 
@@ -58,7 +61,7 @@ export function SectionWardrobe3D() {
             antialias: true,
             powerPreference: 'high-performance',
           }}
-          dpr={[1, 2]}
+          dpr={[1, MAX_DPR]}
           shadows
           onCreated={({ scene }) => {
             scene.background = new THREE.Color(SCENE_BACKGROUND)
