@@ -120,8 +120,18 @@ export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
       variants={overlayVariants}
       initial="closed"
       animate={isOpen ? 'open' : 'exit'}
-      onClick={onClose}
     >
+      {/* Кнопка закрытия — в том же месте, что и гамбургер в хедере (h-14, px-4, кнопка h-10 w-10) */}
+      <button
+        type="button"
+        onClick={onClose}
+        className="fixed left-4 top-[0.5rem] z-[101] flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-neutral-700 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
+        aria-label="Закрыть меню"
+      >
+        <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
       <motion.div
         className="mx-auto w-full max-w-3xl px-4 py-12 sm:max-w-4xl sm:px-6 sm:py-16 md:max-w-5xl md:py-20 lg:max-w-6xl lg:px-8 lg:py-24"
         variants={contentVariants}
