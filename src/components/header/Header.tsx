@@ -220,16 +220,19 @@ export function Header() {
           >
             <MaxIcon />
           </a>
-          {/* Кнопка заказа звонка — акцентная CTA */}
+          {/* Кнопка заказа звонка — на мобильном без иконки и короткий текст */}
           <button
             ref={callbackTriggerRef}
             type="button"
             onClick={() => openCallbackModal(callbackTriggerRef)}
-            className="flex h-9 items-center gap-1.5 rounded-lg bg-amber-600 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-amber-600 px-2.5 sm:px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 min-w-0"
             aria-label="Заказать звонок"
           >
-            <PhoneIcon />
-            <span>Заказать звонок</span>
+            <span className="hidden sm:inline-flex" aria-hidden>
+              <PhoneIcon />
+            </span>
+            <span className="sm:hidden">Звонок</span>
+            <span className="hidden sm:inline">Заказать звонок</span>
           </button>
           {/* Корзина — заглушка */}
           <a
