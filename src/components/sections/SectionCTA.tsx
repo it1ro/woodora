@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { useCallbackModal } from '../../contexts/CallbackModalContext'
-import { phoneHref } from '../../data/contacts'
 import { maxLink, maxLabel } from '../../data/contacts'
 import { revealInitial, revealVisible } from './revealMotion'
 

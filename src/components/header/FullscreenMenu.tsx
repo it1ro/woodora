@@ -52,6 +52,7 @@ const blockVariants = {
 
 export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const { openCallbackModal } = useCallbackModal()
 
   useEffect(() => {
     if (!isOpen) return

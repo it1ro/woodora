@@ -87,7 +87,7 @@ async function submitCallbackRequest(payload: {
   comment: string
 }): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 800))
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.env.DEV) {
     console.log('[CallbackModal] Заявка (заглушка):', payload)
   }
 }
