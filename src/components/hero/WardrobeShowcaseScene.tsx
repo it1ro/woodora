@@ -12,9 +12,21 @@ const ROTATION_OFFSET_Y = Math.PI / 2
 const ROTATION_FULL_TURNS = 1.25
 /** Степень сглаживания: 0 — мгновенно, 1 — не двигается. */
 const ROTATION_SMOOTH = 0.07
-/** Дистанция камеры по скроллу (позиция Z), не clipping planes. */
-const CAMERA_Z_SCROLL_NEAR = 4
-const CAMERA_Z_SCROLL_FAR = 10
+/** Дистанция камеры: ближе = наезд, дальше = отъезд (увеличен разброс для заметности). */
+const CAMERA_Z_NEAR = 6
+const CAMERA_Z_FAR = 16
+/** Плавный переход 0→1 на [a,b] (smoothstep). */
+function smoothstep(a: number, b: number, x: number): number {
+  const t = Math.max(0, Math.min(1, (x - a) / (b - a)))
+  return t * t * (3 - 2 * t)
+}
+/** Кривая "фокуса": 1 в широкой зоне по центру (блок в кадре), 0 только у краёв (выше/ниже — камера отъезжает). */
+function scrollFocus(progress: number): number {
+  const d = Math.abs(progress - 0.5)
+  const plateauEnd = 0.28
+  const falloffEnd = 0.48
+  return 1 - smoothstep(plateauEnd, falloffEnd, d)
+}
 /** Чувствительность вращения мышью (радианы на пиксель). */
 const DRAG_SENSITIVITY = 0.005
 /** Чувствительность зума колёсиком. */
@@ -33,7 +45,7 @@ export function WardrobeShowcaseScene() {
   const { camera, gl } = useThree()
   const groupRef = useRef<Group>(null)
   const currentY = useRef(0)
-  const currentZ = useRef(CAMERA_Z_SCROLL_NEAR)
+  const currentZ = useRef(CAMERA_Z_FAR)
   const dragRotationY = useRef(0)
   const manualZoomOffset = useRef(0)
   const panOffsetX = useRef(0)
@@ -130,8 +142,8 @@ export function WardrobeShowcaseScene() {
         ROTATION_OFFSET_Y + currentY.current + dragRotationY.current
     }
 
-    const baseZ =
-      CAMERA_Z_SCROLL_NEAR + progress * (CAMERA_Z_SCROLL_FAR - CAMERA_Z_SCROLL_NEAR)
+    const focus = scrollFocus(progress)
+    const baseZ = CAMERA_Z_FAR - focus * (CAMERA_Z_FAR - CAMERA_Z_NEAR)
     const targetZ = baseZ + manualZoomOffset.current
     currentZ.current += (targetZ - currentZ.current) * t
     camera.position.set(
