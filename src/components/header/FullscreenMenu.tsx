@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { menuItems } from '../../data/menu'
 import { phone, phoneHref, maxLink, maxLabel } from '../../data/contacts'
 import { categories } from '../../data/categories'
@@ -10,9 +10,27 @@ interface FullscreenMenuProps {
 }
 
 const overlayVariants = {
-  closed: { opacity: 0, transition: { duration: 0.2 } },
-  open: { opacity: 1, transition: { duration: 0.25 } },
-  exit: { opacity: 0, transition: { duration: 0.2 } },
+  closed: {
+    opacity: 0,
+    visibility: 'hidden' as const,
+    pointerEvents: 'none' as const,
+    backdropFilter: 'blur(0px)',
+    transition: { duration: 0.2 },
+  },
+  open: {
+    opacity: 1,
+    visibility: 'visible' as const,
+    pointerEvents: 'auto' as const,
+    backdropFilter: 'blur(24px)',
+    transition: { duration: 0.25 },
+  },
+  exit: {
+    opacity: 0,
+    visibility: 'hidden' as const,
+    pointerEvents: 'none' as const,
+    backdropFilter: 'blur(0px)',
+    transition: { duration: 0.2 },
+  },
 }
 
 const contentVariants = {
@@ -91,123 +109,128 @@ export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
   }, [isOpen])
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          id="fullscreen-menu"
-          ref={containerRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Меню: карта сайта, каталог, контакты"
-          className="fixed inset-0 z-[100] overflow-y-auto bg-white/98 backdrop-blur-md"
-          variants={overlayVariants}
-          initial="closed"
-          animate="open"
-          exit="exit"
-          onClick={onClose}
-        >
-          <motion.div
-            className="mx-auto max-w-3xl px-4 py-12 sm:py-16"
-            variants={contentVariants}
-            initial="closed"
-            animate="open"
-            exit="exit"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Карта сайта */}
-            <motion.section
-              variants={blockVariants}
-              className="mb-10"
-              aria-labelledby="fullscreen-menu-sitemap-heading"
-            >
-              <h2
-                id="fullscreen-menu-sitemap-heading"
-                className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400"
-              >
-                Карта сайта
-              </h2>
-              <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Карта сайта">
-                {menuItems.map((item) => (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    className="text-lg font-medium text-neutral-800 hover:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded px-1 py-0.5"
-                    onClick={onClose}
+    <motion.div
+      id="fullscreen-menu"
+      ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={!isOpen}
+      aria-label="Меню: карта сайта, каталог, контакты"
+      className="fixed inset-0 z-[100] overflow-y-auto bg-white/96"
+      variants={overlayVariants}
+      initial="closed"
+      animate={isOpen ? 'open' : 'exit'}
+      onClick={onClose}
+    >
+      <motion.div
+        className="mx-auto w-full max-w-3xl px-4 py-12 sm:max-w-4xl sm:px-6 sm:py-16 md:max-w-5xl md:py-20 lg:max-w-6xl lg:px-8 lg:py-24"
+        variants={contentVariants}
+        initial="closed"
+        animate={isOpen ? 'open' : 'exit'}
+        onClick={(e) => e.stopPropagation()}
+      >
+            {/* На больших экранах: карта сайта и контакты в одной колонке, каталог занимает основное пространство */}
+            <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-x-16 lg:gap-y-12 xl:gap-x-20">
+              {/* Левая колонка: Карта сайта + Контакты */}
+              <div className="lg:space-y-12">
+                {/* Карта сайта */}
+                <motion.section
+                  variants={blockVariants}
+                  className="mb-10 lg:mb-0"
+                  aria-labelledby="fullscreen-menu-sitemap-heading"
+                >
+                  <h2
+                    id="fullscreen-menu-sitemap-heading"
+                    className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-600 sm:mb-5 sm:text-sm md:mb-6"
                   >
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
-            </motion.section>
+                    Карта сайта
+                  </h2>
+                  <nav
+                    className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-x-8 sm:gap-y-3 md:flex-col md:gap-y-2 md:gap-x-0 lg:gap-y-3"
+                    aria-label="Карта сайта"
+                  >
+                    {menuItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={item.href}
+                        className="text-base font-medium text-neutral-900 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 rounded px-1 py-0.5 sm:text-lg md:text-xl"
+                        onClick={onClose}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </nav>
+                </motion.section>
 
-            {/* Каталог: категории и подкатегории */}
-            <motion.section
-              variants={blockVariants}
-              className="mb-10"
-              aria-labelledby="fullscreen-menu-catalog-heading"
-            >
-              <h2
-                id="fullscreen-menu-catalog-heading"
-                className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400"
-              >
-                Каталог
-              </h2>
-              <ul className="space-y-6">
-                {categories.map((cat) => (
-                  <li key={cat.id}>
-                    <p className="mb-2 text-base font-semibold text-neutral-900">
-                      {cat.title}
-                    </p>
-                    <ul className="space-y-1 pl-2">
-                      {cat.subcategories.map((sub) => (
-                        <li key={sub.id}>
-                          <a
-                            href={sub.href ?? '#'}
-                            className="block rounded px-2 py-1 text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 -mx-2"
-                            onClick={onClose}
-                          >
-                            {sub.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </motion.section>
-
-            {/* Контакты */}
-            <motion.section
-              variants={blockVariants}
-              aria-labelledby="fullscreen-menu-contacts-heading"
-            >
-              <h2
-                id="fullscreen-menu-contacts-heading"
-                className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400"
-              >
-                Контакты
-              </h2>
-              <div className="flex flex-wrap gap-x-6 gap-y-2">
-                <a
-                  href={phoneHref}
-                  className="text-lg font-medium text-neutral-800 hover:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded px-1 py-0.5"
-                  onClick={onClose}
+                {/* Контакты */}
+                <motion.section
+                  variants={blockVariants}
+                  className="mb-10 lg:mb-0"
+                  aria-labelledby="fullscreen-menu-contacts-heading"
                 >
-                  {phone}
-                </a>
-                <a
-                  href={maxLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-medium text-neutral-800 hover:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded px-1 py-0.5"
-                >
-                  {maxLabel}
-                </a>
+                  <h2
+                    id="fullscreen-menu-contacts-heading"
+                    className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-600 sm:mb-5 sm:text-sm md:mb-6"
+                  >
+                    Контакты
+                  </h2>
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-x-8 sm:gap-y-3 md:flex-col md:gap-y-2 md:gap-x-0 lg:gap-y-3">
+                    <a
+                      href={phoneHref}
+                      className="text-base font-medium text-neutral-900 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 rounded px-1 py-0.5 sm:text-lg md:text-xl"
+                      onClick={onClose}
+                    >
+                      {phone}
+                    </a>
+                    <a
+                      href={maxLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base font-medium text-neutral-900 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 rounded px-1 py-0.5 sm:text-lg md:text-xl"
+                    >
+                      {maxLabel}
+                    </a>
+                  </div>
+                </motion.section>
               </div>
-            </motion.section>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+
+              {/* Правая колонка: Каталог — на больших экранах сетка категорий */}
+              <motion.section
+                variants={blockVariants}
+                className="lg:mt-0"
+                aria-labelledby="fullscreen-menu-catalog-heading"
+              >
+                <h2
+                  id="fullscreen-menu-catalog-heading"
+                  className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-600 sm:mb-5 sm:text-sm md:mb-6"
+                >
+                  Каталог
+                </h2>
+                <ul className="space-y-6 sm:space-y-8 md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-8 md:space-y-0 xl:grid-cols-3 xl:gap-x-12">
+                  {categories.map((cat) => (
+                    <li key={cat.id}>
+                      <p className="mb-2 text-base font-semibold text-neutral-900 sm:mb-3 sm:text-lg md:text-xl">
+                        {cat.title}
+                      </p>
+                      <ul className="space-y-1 pl-2 sm:space-y-1.5 sm:pl-0">
+                        {cat.subcategories.map((sub) => (
+                          <li key={sub.id}>
+                            <a
+                              href={sub.href ?? '#'}
+                              className="block rounded px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 -mx-2 sm:text-base md:py-1.5 md:text-lg"
+                              onClick={onClose}
+                            >
+                              {sub.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </motion.section>
+            </div>
+      </motion.div>
+    </motion.div>
   )
 }
