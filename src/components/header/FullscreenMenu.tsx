@@ -196,12 +196,13 @@ export function FullscreenMenu({ isOpen, onClose }: FullscreenMenuProps) {
                     </a>
                     <button
                       type="button"
-                      className="text-base font-medium text-neutral-900 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 rounded px-1 py-0.5 sm:text-lg md:text-xl text-left"
+                      className="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-5 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 sm:text-lg md:text-xl"
                       onClick={() => {
                         onClose()
                         openCallbackModal()
                       }}
                     >
+                      <span aria-hidden>📞</span>
                       Заказать звонок
                     </button>
                     <a
