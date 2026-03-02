@@ -48,12 +48,15 @@ export function Hero() {
       />
 
       {/* Контент поверх */}
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-        <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl lg:text-6xl">
-          Мебель для образования, офиса и дома
+      <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
+        <h1
+          className="font-bold tracking-tight text-neutral-900"
+          style={{ fontSize: 'clamp(3.5rem, 12vw, 10rem)', lineHeight: 0.95, letterSpacing: '-0.02em' }}
+        >
+          WOODORA
         </h1>
-        <p className="mt-4 text-lg text-neutral-600 md:text-xl">
-          Шкафы, столы, кровати и комплекты для детских садов, школ, офисов и общежитий
+        <p className="mt-6 text-2xl font-semibold text-neutral-800 md:text-3xl">
+          Мебель для образования, офиса и дома
         </p>
         <a
           href="#categories"
