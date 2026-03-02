@@ -45,10 +45,17 @@ function CartIcon() {
   )
 }
 
-function WardrobeIcon() {
+/** Стул вид сбоку — для кнопки «Категории мебели» */
+function ChairSideIcon() {
   return (
     <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 4h14v16H5V4z M12 4v16" />
+      {/* Прямая спинка */}
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M7 5v9" />
+      {/* Сиденье */}
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M7 14h10" />
+      {/* Ножки расставлены (устойчивая опора) */}
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M7 14l-2 6" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17 14l2 6" />
     </svg>
   )
 }
@@ -145,17 +152,13 @@ export function Header() {
           <div ref={mobileCatalogRef} className="relative md:hidden">
             <button
               type="button"
-              className="flex items-center gap-1 rounded px-2 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 min-h-[2.25rem] min-w-[2.25rem] touch-manipulation"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-neutral-600 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 touch-manipulation"
               onClick={() => setCatalogOpen((o) => !o)}
               aria-expanded={catalogOpen}
               aria-haspopup="menu"
               aria-label="Категории мебели"
             >
-              <WardrobeIcon />
-              Категории мебели
-              <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <ChairSideIcon />
             </button>
             <CatalogDropdown
               isOpen={catalogOpen}
@@ -179,7 +182,7 @@ export function Header() {
               aria-haspopup="menu"
               aria-label="Категории мебели"
             >
-              <WardrobeIcon />
+              <ChairSideIcon />
               Категории мебели
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
