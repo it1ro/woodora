@@ -4,7 +4,7 @@ import { CatalogDropdown } from './CatalogDropdown'
 import { phone, phoneHref } from '../../data/contacts'
 import { maxLink, maxLabel } from '../../data/contacts'
 
-const LOGO = 'Woodora'
+const LOGO = 'Steelwood'
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (

@@ -1,7 +1,7 @@
 import { phone, phoneHref } from '../data/contacts'
 import { maxLink, maxLabel } from '../data/contacts'
 
-const LOGO = 'Woodora'
+const LOGO = 'Steelwood'
 
 export function Footer() {
   return (

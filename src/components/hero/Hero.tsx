@@ -53,7 +53,7 @@ export function Hero() {
           className="font-hero-brand font-bold tracking-tight text-neutral-900"
           style={{ fontSize: 'clamp(3.5rem, 12vw, 10rem)', lineHeight: 0.95, letterSpacing: '-0.02em' }}
         >
-          WOODORA <span className="text-2xl md:text-3xl align-middle">🤷</span>
+          STEEL & WOOD
         </h1>
         <p className="mt-6 text-2xl font-semibold text-neutral-800 md:text-3xl">
           Мебель для образования, офиса и дома
