@@ -50,7 +50,7 @@ export function Hero() {
       {/* Контент поверх */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
         <h1
-          className="font-bold tracking-tight text-neutral-900"
+          className="font-hero-brand font-bold tracking-tight text-neutral-900"
           style={{ fontSize: 'clamp(3.5rem, 12vw, 10rem)', lineHeight: 0.95, letterSpacing: '-0.02em' }}
         >
           WOODORA

@@ -26,6 +26,11 @@ body {
   min-height: 100vh;
 }
 
+/* Шрифт логотипа/заголовка hero — премиальный serif в духе мебельной темы */
+.font-hero-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
 /* Полноэкранное меню: невидимо до первого кадра, чтобы убрать мигание до старта анимации */
 #fullscreen-menu {
   opacity: 0;
