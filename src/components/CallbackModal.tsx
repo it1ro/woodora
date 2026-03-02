@@ -249,7 +249,7 @@ export function CallbackModal({ isOpen, onClose, triggerRef }: CallbackModalProp
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-md rounded-2xl bg-white shadow-xl"
           >
-            <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4 sm:px-6">
+            <div className="relative flex items-center justify-center border-b border-neutral-200 px-5 py-4 sm:px-6">
               <h2
                 id="callback-modal-title"
                 className="text-lg font-semibold text-neutral-900"
@@ -259,7 +259,7 @@ export function CallbackModal({ isOpen, onClose, triggerRef }: CallbackModalProp
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
+                className="absolute right-5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 sm:right-6"
                 aria-label="Закрыть"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
